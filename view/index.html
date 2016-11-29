@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>UACACC Dashboard</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--Download this bootstrap theme https://bootswatch.com/flatly/bootstrap.min.css and replace in lib/bootstrap/dist/css-->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css" />
+    <!-- endbower -->
+    <!-- inject:css -->
+    <!-- endinject -->
+</head>
+
+<body ng-app="uacacc-dashboard">
+    <div class="page-header text-center">
+        <h2>UACACC Dashboard
+        </h2>
+        <hr/>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="alert alert-info alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong>Note:</strong> All Timestamps are in UTC.
+                </div>
+            </div>
+        </div>
+        <div class="row" ng-controller="ZoneController">
+
+            <div class="col-lg-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{{zones.title}}</h3>
+                    </div>
+                    <div class='table-responsive'>
+                        <table class="table table-bordered text-center">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th ng-repeat='zone in zones.zone1Data'>{{zone.airportAbbr}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th class="text-nowrap">Zone 1
+                                        <a id='zone1Info' href='#' data-toggle="modal" data-target="#modalZone1Info"><i class="fa fa-info-circle"></i></a>
+                                    </th>
+                                    <td ng-repeat='zone in zones.zone1Data' class='{{zone.cssClass}}'>{{zone.lastUpdateMessage}}</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-nowrap">Zone 2
+                                        <a id='zone2Info' href='#' data-toggle="modal" data-target="#modalZone2Info"><i class="fa fa-info-circle"></i></a>
+                                    </th>
+                                    <td ng-repeat='zone in zones.zone2Data' class='{{zone.cssClass}}'>{{zone.lastUpdateMessage}}</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-nowrap">Zone 3
+                                        <a id='zone3Info' href='#' data-toggle="modal" data-target="#modalZone3Info"><i class="fa fa-info-circle"></i></a>
+                                    </th>
+                                    <td ng-repeat='zone in zones.zone3Data' class='{{zone.cssClass}}'>{{zone.lastUpdateMessage}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" ng-controller="ParkingSpaceController">
+            <div class="col-lg-12">
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">No. of Available Parking Slots</h3>
+                    </div>
+                    <div class='table-responsive'>
+                        <table class="table table-bordered text-center">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th ng-repeat="space in ps.parkingSpaces">{{space.airportAbbr}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>Last Updated</th>
+                                    <td class="text-danger" ng-repeat="space in ps.parkingSpaces">{{space.lastUpdateOn}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Medium</th>
+                                    <td ng-repeat="space in ps.parkingSpaces" class='{{space.mediumCssClass}}'>{{space.mediumSpace}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Heavy</th>
+                                    <td ng-repeat="space in ps.parkingSpaces" class='{{space.heavyCssClass}}'>{{space.heavySpace}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Super</th>
+                                    <td ng-repeat="space in ps.parkingSpaces" class='{{space.superCssClass}}'>{{space.superSpace}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Modals-->
+    <div id='dvModals' ng-controller="ZoneInfoController">
+        <div class="modal fade" id="modalZone1Info" tabindex="-1" role="dialog" aria-labelledby="zone1InfoLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="zone1InfoLabel">Regional Airports in Zone 1</h4>
+                    </div>
+                    <div class="modal-body" id='zone1InfoBody'>
+                        The following airports are in Zone 1:
+                        <ul style="list-style-type:disc">
+                            <li ng-repeat='airport in zone1.airports'>{{airport}}</li>
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modalZone2Info" tabindex="-1" role="dialog" aria-labelledby="zone2InfoLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="zone2InfoLabel">Regional Airports in Zone 2</h4>
+                    </div>
+                    <div class="modal-body" id='zone2InfoBody'>
+                        The following airports are in Zone 2:
+                        <ul style="list-style-type:disc">
+                            <li ng-repeat='airport in zone2.airports'>{{airport}}</li>
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modalZone3Info" tabindex="-1" role="dialog" aria-labelledby="zone3InfoLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="zone3InfoLabel">Regional Airports in Zone 3</h4>
+                    </div>
+                    <div class="modal-body" id='zone3InfoBody'>
+                        The following airports are in Zone 3:
+                        <ul style="list-style-type:disc">
+                            <li ng-repeat='airport in zone3.airports'>{{airport}}</li>
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>-->
+    <!-- bower:js -->
+    <script src="/lib/jquery/dist/jquery.js"></script>
+    <script src="/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/lib/angular/angular.js"></script>
+    <script src="/lib/moment/moment.js"></script>
+    <script src="/lib/angular-moment/angular-moment.js"></script>
+    <!-- endbower -->
+
+    <!--Socket.io-->
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+
+    <!-- inject:js -->
+
+    <script src="/app/app.js"></script>
+
+    <script src="/app/services/uacacc-service.js"></script>
+
+    <script src="/app/controllers/zone-controller.js"></script>
+
+    <script src="/app/controllers/parking-space-controller.js"></script>
+
+    <script src="/app/controllers/zone-info-controller.js"></script>
+
+    <!-- endinject -->
+</body>
+
+</html>
